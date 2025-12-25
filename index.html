@@ -33,11 +33,25 @@
   .expanded::before {
     content: "▼ ";
   }
+
+  .highlight {
+  background-color: #ffe58f;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
 </style>
 </head>
 <body>
 
 <h2>Odukoya Family Tree</h2>
+
+  <input 
+  type="text" 
+  id="searchInput" 
+  placeholder="Search family member..." 
+  style="padding:8px; width:260px; margin-bottom:15px;"
+>
 
 <ul>
   <li>
@@ -66,8 +80,13 @@
 </ul>
 
 <script>
-  document.querySelectorAll(".person").forEach(person => {
-    person.addEventListener("click", () => {
+  const persons = document.querySelectorAll(".person");
+  const searchInput = document.getElementById("searchInput");
+
+  // Toggle expand/collapse on click
+  persons.forEach(person => {
+    person.addEventListener("click", e => {
+      e.stopPropagation();
       const children = person.nextElementSibling;
       if (!children) return;
 
@@ -76,7 +95,44 @@
       person.classList.toggle("expanded", !isOpen);
     });
   });
+
+  // Search functionality
+  searchInput.addEventListener("input", () => {
+    const query = searchInput.value.toLowerCase();
+
+    persons.forEach(person => {
+      person.classList.remove("highlight");
+    });
+
+    if (!query) {
+      document.querySelectorAll(".children").forEach(ul => {
+        ul.style.display = "none";
+      });
+      document.querySelectorAll(".person").forEach(p => {
+        p.classList.remove("expanded");
+      });
+      return;
+    }
+
+    persons.forEach(person => {
+      if (person.textContent.toLowerCase().includes(query)) {
+        person.classList.add("highlight");
+
+        // Expand all parents
+        let parent = person.parentElement;
+        while (parent) {
+          if (parent.tagName === "UL" && parent.classList.contains("children")) {
+            parent.style.display = "block";
+            const owner = parent.previousElementSibling;
+            if (owner) owner.classList.add("expanded");
+          }
+          parent = parent.parentElement;
+        }
+      }
+    });
+  });
 </script>
+
 
 </body>
 </html>

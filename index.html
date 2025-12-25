@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Our Family Tree</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+
+  ul {
+    list-style-type: none;
+    margin-left: 20px;
+    padding-left: 20px;
+    border-left: 1px solid #ccc;
+  }
+
+  li {
+    margin: 6px 0;
+    cursor: pointer;
+  }
+
+  .children {
+    display: none;
+  }
+
+  .person::before {
+    content: "▶ ";
+    font-size: 12px;
+  }
+
+  .expanded::before {
+    content: "▼ ";
+  }
+</style>
+</head>
+<body>
+
+<h2>Odukoya Family Tree</h2>
+
+<ul>
+  <li>
+    <span class="person">Kolawole Festus Odukoya</span>
+    <ul class="children">
+      <li>
+        <span class="person">Taiwo Folorunsho Odukoya</span>
+        <ul class="children">
+          <li><span>Emmanuel Abayomi Odukoya</span></li>
+          <li><span>Oluwaseun Benjamin Odukoya</span></li>
+          <li><span>Gbolade Isaac Odukoya</span></li>
+          <li><span>Olaleye Moses Odukoya</span></li>
+          <li><span>Samson Oladosu Odukoya</span></li>
+          <li><span>Joshua Odukoya</span></li>
+          <li><span>Kofoworola Yvette Odukoya</span></li>
+        </ul>
+      </li>
+      <li>
+        <span class="person">Uncle Odukoya</span>
+        <ul class="children">
+          <li><span>Cousin 1</span></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<script>
+  document.querySelectorAll(".person").forEach(person => {
+    person.addEventListener("click", () => {
+      const children = person.nextElementSibling;
+      if (!children) return;
+
+      const isOpen = children.style.display === "block";
+      children.style.display = isOpen ? "none" : "block";
+      person.classList.toggle("expanded", !isOpen);
+    });
+  });
+</script>
+
+</body>
+</html>
